@@ -18,6 +18,9 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty
 from kivy.app import App
 
+from service import ServiceAppMixin
+import time
+
 app = None
 
 Builder.load_string('''
@@ -92,13 +95,25 @@ class MainScreen(FloatLayout):
             )[20:24])
 
 
-class RemoteKivyApp(App):
+class RemoteKivyApp(App, ServiceAppMixin):
     def build(self):
         global app
         app = self
+        #self.start_service('kivy-remote-shell service running...')
+        #time.sleep(10)
         self.connection = reactor.listenTCP(8000,
                 getManholeFactory(globals(), admin='kivy'))
         return MainScreen()
+
+    def on_pause(self):
+        return True # dont stop. Just hybernate.
+
+    def on_resume(self):
+        return
+
+    def on_stop(self):
+        if hasattr(self, 'service'):
+            self.stop_service()
 
 if __name__ == '__main__':
     RemoteKivyApp().run()

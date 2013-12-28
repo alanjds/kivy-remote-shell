@@ -56,9 +56,3 @@ class Android(object):
     def rpc_call(*args):
       return self._rpc(name, *args)
     return rpc_call
-
-
-class FacadeManagerProxy(object):
-  def __init__(self):
-    mFacadeManagerFactory = FacadeManagerFactory(FacadeConfiguration.getSdkLevel(), service, intent,
-            FacadeConfiguration.getFacadeClasses())

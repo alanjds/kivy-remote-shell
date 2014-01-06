@@ -34,7 +34,7 @@ class Android(object):
     self.id = 0
     handshake = handshake or os.environ.get('AP_HANDSHAKE')
     if handshake:
-      self._authenticate(HANDSHAKE)
+      self._authenticate(handshake)
 
   def _rpc(self, method, *args):
     data = {'id': self.id,

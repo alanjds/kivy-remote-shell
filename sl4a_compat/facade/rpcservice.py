@@ -13,6 +13,7 @@ context = cast('android.content.Context', activity)
 
 
 def start(external=False):
+    """Starts am RPC service and returns the (host, port, handshake) handle. """
     host = port = received_handshake = None
 
     if external:
@@ -28,7 +29,6 @@ def start(external=False):
     def _on_netaddress_received(context, intent):
         netaddress_received = True
         receivedExtras = intent.getExtras()
-        #headset_state = bool(extras.get('state'))
         msg = 'NETADDRESS received!'; Log.v(msg); print msg
         #netaddress_receiver.stop() # Disposable BroadcastReceiver?
 
@@ -51,5 +51,4 @@ def start(external=False):
     finally:
         netaddress_receiver.stop()
 
-    return receivedExtras.getString('host'), receivedExtras.get('port'), receivedExtras.getString('handshake')
-    return host, port, handshake
+    return receivedExtras.getString('host'), receivedExtras.getString('port'), receivedExtras.getString('handshake')

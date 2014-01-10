@@ -23,17 +23,21 @@ def start(external=False):
         raise NotImplementedError('Should call stock SL4A to start the RPC service')
 
     netaddress_receiver = None
-    netaddress_received = False
-    receivedExtras = None
+
+    netaddress_received = []
 
     def _on_netaddress_received(context, intent):
-        netaddress_received = True
+        print 'NETADDRESS received!'
         receivedExtras = intent.getExtras()
-        msg = 'NETADDRESS received!'; Log.v(msg); print msg
+        host = receivedExtras.getString('host')
+        port = receivedExtras.getString('port')
+        received_handshake = receivedExtras.getString('handshake')
+        netaddress_received.extend([host, port, received_handshake])
         #netaddress_receiver.stop() # Disposable BroadcastReceiver?
 
     netaddress_receiver = BroadcastReceiver(_on_netaddress_received,
                                             actions=['org.alanjds.sl4acompat.STORE_RPC_NETADDRESS'])
+
     netaddress_receiver.start()
 
     # TODO: How to get MinimalService.class with pyjnius without this hack?
@@ -41,14 +45,14 @@ def start(external=False):
     serviceIntent = Intent(context, MinimalService__class)
     componentName  = context.startService(serviceIntent)
 
-    try:
-        for i in xrange(20): # wait up to 10 sec
-            if netaddress_received:
-                break
-            time.sleep(0.5)
-        else:
-            raise RuntimeError('Service net address has requested but never received')
-    finally:
-        netaddress_receiver.stop()
+    for i in xrange(20): # wait up to 2 sec
+        if netaddress_received:
+            print 'NETADDRESS accepted!'
+            break
+        time.sleep(0.2)
+    else:
+        raise RuntimeError('Service net address has requested but never received')
 
-    return receivedExtras.getString('host'), receivedExtras.getString('port'), receivedExtras.getString('handshake')
+    netaddress_receiver.stop()
+
+    return netaddress_received

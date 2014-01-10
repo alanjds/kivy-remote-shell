@@ -27,7 +27,7 @@ def start(external=False):
     netaddress_received = []
 
     def _on_netaddress_received(context, intent):
-        print 'NETADDRESS received!'
+        print 'SL4A net address received!'
         receivedExtras = intent.getExtras()
         host = receivedExtras.getString('host')
         port = receivedExtras.getString('port')
@@ -47,7 +47,7 @@ def start(external=False):
 
     for i in xrange(20): # wait up to 2 sec
         if netaddress_received:
-            print 'NETADDRESS accepted!'
+            print 'SL4A net address accepted!'
             break
         time.sleep(0.2)
     else:

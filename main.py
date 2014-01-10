@@ -18,8 +18,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty
 from kivy.app import App
 
-import sl4a_compat.facade.rpcservice
-import sl4a_compat.androidhelper as sl4a
+import sl4acompat.facade.rpcservice
+import sl4acompat.androidhelper as sl4a
 
 app = None
 droid = None
@@ -100,7 +100,7 @@ class RemoteKivyApp(App):
     def build(self):
         global app
         global droid
-        rpc_details = sl4a_compat.facade.rpcservice.start()
+        rpc_details = sl4acompat.facade.rpcservice.start()
         droid = sl4a.Android(*rpc_details) # [host, port, handshake]
         droid.makeToast('NOTICE: SL4A service connected')
 

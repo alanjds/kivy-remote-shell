@@ -15,10 +15,11 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty
 from kivy.app import App
 
-from service import ServiceAppMixin
-import time
+import sl4acompat.facade.rpcservice
+import sl4acompat.androidhelper as sl4a
 
 app = None
+droid = None
 
 Builder.load_string('''
 <MainScreen>:
@@ -84,12 +85,13 @@ class MainScreen(FloatLayout):
 class RemoteKivyApp(App, ServiceAppMixin):
     def build(self):
         global app
-        app = self
+        global droid
+        rpc_details = sl4acompat.facade.rpcservice.start()
+        droid = sl4a.Android(*rpc_details) # [host, port, handshake]
+        droid.makeToast('NOTICE: SL4A service connected')
+
         self.start_service('kivy-remote-shell service running...')
         return MainScreen()
-
-    def on_pause(self):
-        return True # dont stop. Just hybernate.
 
     def on_resume(self):
         return

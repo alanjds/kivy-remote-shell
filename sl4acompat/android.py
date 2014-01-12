@@ -27,12 +27,13 @@ Result = collections.namedtuple('Result', 'id,result,error')
 class Android(object):
 
   def __init__(self, host=None, port=None, handshake=None):
-    addr = (host or os.environ.get('AP_HOST'),
-            port or os.environ.get('AP_PORT'))
+    print host, port, handshake
+    addr = (str(host or os.environ.get('AP_HOST')),
+            str(port or os.environ.get('AP_PORT')))
     self.conn = socket.create_connection(addr)
     self.client = self.conn.makefile()
     self.id = 0
-    handshake = handshake or os.environ.get('AP_HANDSHAKE')
+    handshake = str(handshake or os.environ.get('AP_HANDSHAKE'))
     if handshake:
       self._authenticate(handshake)
 

@@ -489,7 +489,7 @@ class FullScreenWrapper2App(object):
         _internal_exit_signal.post_internal_exit_signal()
    
     @classmethod
-    def eventloop(cls, poller='eventPoll'):
+    def eventloop(cls, poller='eventWait'):
         '''
         The main event loop to catch & dispatch events in the active/topmost layout in the _layouts[] stack & its views. 
         

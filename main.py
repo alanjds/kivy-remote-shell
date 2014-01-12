@@ -14,6 +14,9 @@ from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty
 from kivy.app import App
+from service import ServiceAppMixin
+
+import json
 
 import sl4acompat.facade.rpcservice
 import sl4acompat.androidhelper as sl4a
@@ -88,10 +91,12 @@ class RemoteKivyApp(App, ServiceAppMixin):
         global droid
         rpc_details = sl4acompat.facade.rpcservice.start()
         droid = sl4a.Android(*rpc_details) # [host, port, handshake]
-        droid.makeToast('NOTICE: SL4A service connected')
 
-        self.start_service('kivy-remote-shell service running...')
+        self.start_service(json.dumps(rpc_details))
         return MainScreen()
+
+    def on_pause(self):
+        return True
 
     def on_resume(self):
         return

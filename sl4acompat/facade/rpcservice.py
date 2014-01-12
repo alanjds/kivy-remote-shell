@@ -36,7 +36,8 @@ def start(external=False):
         #netaddress_receiver.stop() # Disposable BroadcastReceiver?
 
     netaddress_receiver = BroadcastReceiver(_on_netaddress_received,
-                                            actions=['org.alanjds.sl4acompat.STORE_RPC_NETADDRESS'])
+                                            actions=['org.alanjds.sl4acompat.STORE_RPC_NETADDRESS'],
+                                            categories=[])
 
     netaddress_receiver.start()
 

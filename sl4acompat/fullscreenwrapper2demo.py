@@ -88,4 +88,4 @@ if __name__ == '__main__':
     random.seed()
     FullScreenWrapper2App.initialize(droid)
     FullScreenWrapper2App.show_layout(DemoLayout())
-    FullScreenWrapper2App.eventloop()
+    FullScreenWrapper2App.eventloop(poller='eventWait')

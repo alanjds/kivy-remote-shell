@@ -52,10 +52,12 @@ xmldata = """<?xml version="1.0" encoding="utf-8"?>
     </LinearLayout>
 </LinearLayout>"""
 
+import random
 from fullscreenwrapper2 import *
 
 class DemoLayout(Layout):
     def __init__(self):
+        random.seed()
         super(DemoLayout,self).__init__(xmldata,"FullScreenWrapper Demo")
         
     def on_show(self):

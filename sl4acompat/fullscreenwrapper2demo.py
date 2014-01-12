@@ -52,7 +52,6 @@ xmldata = """<?xml version="1.0" encoding="utf-8"?>
     </LinearLayout>
 </LinearLayout>"""
 
-import android, random
 from fullscreenwrapper2 import *
 
 class DemoLayout(Layout):
@@ -82,6 +81,7 @@ class DemoLayout(Layout):
         return hexrep 
 
 if __name__ == '__main__':
+    import android, random
     droid = android.Android()
     random.seed()
     FullScreenWrapper2App.initialize(droid)

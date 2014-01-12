@@ -489,7 +489,7 @@ class FullScreenWrapper2App(object):
         _internal_exit_signal.post_internal_exit_signal()
    
     @classmethod
-    def eventloop(cls):
+    def eventloop(cls, poller='eventPoll'):
         '''
         The main event loop to catch & dispatch events in the active/topmost layout in the _layouts[] stack & its views. 
         
@@ -503,9 +503,13 @@ class FullScreenWrapper2App(object):
             raise RuntimeError("Trying to start eventloop without a layout visible")
         
         while(True):
-            evt=cls.get_android_instance().eventPoll()
-            if(len(evt.result)>0):
-                eventdata=evt.result[0]
+            if poller == 'eventPoll':
+                evt = cls.get_android_instance().eventPoll()
+            elif poller == 'eventWait':
+                evt = cls.get_android_instance().eventWait()
+
+            if evt.result:
+                eventdata = evt.result[0] if isinstance(evt.result, list) else evt.result
                 
                 #this corrects an eventpost issue where an extra "" wraps the json
                 try:
